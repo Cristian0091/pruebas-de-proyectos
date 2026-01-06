@@ -1,0 +1,349 @@
+/* Estilos específicos para el perfil de Cocina */
+.cocina-container {
+    max-width: 100%;
+    min-height: 100vh;
+    background: #1a1a1a; /* Fondo oscuro para modo cocina */
+    color: #ffffff;
+    padding: 10px;
+}
+
+/* Header de cocina */
+.cocina-header {
+    background: #2c3e50;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.subtitle {
+    margin: 5px 0 0 0;
+    color: #bdc3c7;
+    font-size: 0.9rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Contenedor de pedidos */
+.pedidos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    color: #ecf0f1;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #bdc3c7;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Tarjetas de pedido */
+.pedido-card {
+    background: #2c3e50;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-left: 5px solid var(--secondary-color);
+    transition: var(--transition);
+    animation: slideIn 0.3s ease-out;
+}
+
+.pedido-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pedido-card.nuevo {
+    border-left-color: var(--success-color);
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    0%, 100% { border-left-color: var(--success-color); }
+    50% { border-left-color: #fff; }
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mesa-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mesa-numero {
+    background: var(--secondary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.mesa-text h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.mesa-text .hora {
+    color: #bdc3c7;
+    font-size: 0.9rem;
+}
+
+.estado-badge {
+    background: var(--warning-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Lista de productos */
+.pedido-productos {
+    margin-bottom: 20px;
+}
+
+.producto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.producto-item:last-child {
+    border-bottom: none;
+}
+
+.producto-cantidad {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.producto-nombre {
+    flex-grow: 1;
+}
+
+.producto-precio {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+/* Observaciones */
+.pedido-observaciones {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.pedido-observaciones:empty {
+    display: none;
+}
+
+/* Botones de acción */
+.pedido-acciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.btn-terminado {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-terminado:hover {
+    background-color: #219a52;
+}
+
+.btn-cancelado {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: var(--danger-color);
+    border: 2px solid var(--danger-color);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-cancelado:hover {
+    background-color: rgba(231, 76, 60, 0.3);
+}
+
+/* Notificaciones */
+.notifications-area {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.notification {
+    background: var(--success-color);
+    color: white;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification.warning {
+    background: var(--warning-color);
+}
+
+.notification.error {
+    background: var(--danger-color);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Modo claro para cocina (opcional) */
+@media (prefers-color-scheme: light) {
+    .cocina-container {
+        background: #f5f5f5;
+        color: #333;
+    }
+    
+    .cocina-header {
+        background: white;
+        color: #333;
+    }
+    
+    .pedido-card {
+        background: white;
+        color: #333;
+    }
+    
+    .empty-state {
+        background: white;
+        color: #333;
+    }
+    
+    .user-info {
+        background: #f0f0f0;
+        color: #333;
+    }
+}
+
+/* Responsive para tablets */
+@media (max-width: 768px) {
+    .pedidos-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .cocina-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-right {
+        justify-content: space-between;
+    }
+    
+    .notifications-area {
+        width: calc(100% - 40px);
+    }
+}
+
+/* Animación para nuevos pedidos */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

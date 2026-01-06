@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocina - RestaurantPro</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/cocina.css">
+</head>
+<body class="cocina-container">
+    <header class="cocina-header">
+        <div class="header-left">
+            <h1>👨‍🍳 Cocina</h1>
+            <p class="subtitle">Pedidos en tiempo real</p>
+        </div>
+        <div class="header-right">
+            <div class="user-info" id="userInfo">
+                <span>👤 Cargando...</span>
+            </div>
+            <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <main class="cocina-main">
+        <div class="pedidos-container" id="pedidosContainer">
+            <!-- Los pedidos se cargarán dinámicamente aquí -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">🍽️</div>
+                <h3>No hay pedidos pendientes</h3>
+                <p>Los pedidos aparecerán aquí automáticamente cuando sean enviados por los meseros.</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="notifications-area" id="notificationsArea">
+        <!-- Las notificaciones se mostrarán aquí -->
+    </div>
+
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/database.js"></script>
+    <script src="scripts/cocina.js"></script>
+</body>
+</html>

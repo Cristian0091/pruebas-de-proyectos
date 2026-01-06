@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - RestaurantPro</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🍽️ RestaurantPro</h1>
+            <p>Ingresa con tus credenciales</p>
+        </div>
+
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required autocomplete="current-password">
+            </div>
+
+            <div class="form-group">
+                <label for="role">Perfil</label>
+                <select id="role" required>
+                    <option value="">Selecciona un perfil</option>
+                    <option value="pedidos">Pedidos (Meseros)</option>
+                    <option value="cocina">Cocina</option>
+                </select>
+            </div>
+
+            <button type="submit" class="login-button">Ingresar al Sistema</button>
+
+            <div class="demo-notes">
+                <p><strong>Nota:</strong> Este sistema funciona completamente en el navegador. Los datos se guardan en Google Sheets.</p>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            <a href="index.html">← Volver al inicio</a>
+        </div>
+    </div>
+
+    <script src="scripts/auth.js"></script>
+</body>
+</html>

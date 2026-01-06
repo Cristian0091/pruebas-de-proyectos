@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - RestaurantPro</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/pedidos.css">
+</head>
+<body class="pedidos-container">
+    <header class="pedidos-header">
+        <div class="user-info" id="userInfo">
+            <span>👤 Cargando...</span>
+        </div>
+        <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+    </header>
+
+    <main class="pedidos-main">
+        <!-- Selección de mesa -->
+        <section class="mesa-selector">
+            <label for="mesaNumber">Número de Mesa:</label>
+            <input type="number" id="mesaNumber" min="1" max="20" placeholder="Ej: 1" readonly>
+            
+            <div class="mesa-grid" id="mesaGrid">
+                <!-- Las mesas se generarán dinámicamente con JavaScript -->
+            </div>
+        </section>
+
+        <!-- Categorías de productos -->
+        <section class="categorias">
+            <button class="categoria-btn active" data-categoria="comidas-rapidas">🍔 Comidas Rápidas</button>
+            <button class="categoria-btn" data-categoria="especiales">⭐ Especiales</button>
+            <button class="categoria-btn" data-categoria="bebidas">🥤 Bebidas</button>
+            <button class="categoria-btn" data-categoria="heladeria">🍦 Heladería</button>
+        </section>
+
+        <!-- Grid de productos -->
+        <section class="productos-section">
+            <h2>Productos</h2>
+            <div class="productos-grid" id="productosGrid">
+                <!-- Los productos se cargarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Pedido actual -->
+        <section class="pedido-actual">
+            <div class="pedido-header">
+                <h3>🛒 Pedido Actual</h3>
+                <span class="mesa-indicator">Mesa: <span id="mesaSeleccionada">-</span></span>
+            </div>
+            
+            <div class="pedido-items" id="pedidoItems">
+                <!-- Los items del pedido se mostrarán aquí -->
+                <div class="pedido-vacio">
+                    <p>No hay productos en el pedido</p>
+                    <small>Selecciona una mesa y agrega productos</small>
+                </div>
+            </div>
+
+            <div class="observaciones-container">
+                <label for="observaciones">Observaciones:</label>
+                <textarea 
+                    id="observaciones" 
+                    class="observaciones-input" 
+                    placeholder="Ej: sin cebolla, extra queso, bien cocido, etc."
+                    rows="3"
+                ></textarea>
+            </div>
+
+            <div class="pedido-total">
+                <span>Total:</span>
+                <span id="pedidoTotal">$0.00</span>
+            </div>
+
+            <button id="enviarPedido" class="enviar-btn" disabled>
+                📤 Enviar Pedido a Cocina
+            </button>
+        </section>
+    </main>
+
+    <!-- Modal para confirmar envío -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>¿Enviar pedido a cocina?</h3>
+            <p>Mesa: <span id="modalMesa">-</span></p>
+            <p>Total: <span id="modalTotal">$0.00</span></p>
+            <p>Productos: <span id="modalProductos">0</span></p>
+            <div class="modal-buttons">
+                <button id="confirmarEnvio" class="confirm-btn">✅ Sí, Enviar</button>
+                <button id="cancelarEnvio" class="cancel-btn">❌ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de cantidad de producto -->
+    <div id="cantidadModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalProductoNombre">Producto</h3>
+            <div class="cantidad-selector">
+                <button class="cantidad-btn" data-action="decrement">-</button>
+                <input type="number" id="cantidadInput" value="1" min="1" max="20">
+                <button class="cantidad-btn" data-action="increment">+</button>
+            </div>
+            <div class="modal-observaciones">
+                <label for="modalObservaciones">Observaciones específicas:</label>
+                <textarea id="modalObservaciones" placeholder="Ej: sin mayonesa, extra tomate"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button id="agregarConCantidad" class="confirm-btn">➕ Agregar al Pedido</button>
+                <button id="cancelarCantidad" class="cancel-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/pedidos.js"></script>
+    
+    <script>
+        // Script adicional para manejar modales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar botón de logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (auth && auth.logout) {
+                        auth.logout();
+                    } else {
+                        localStorage.removeItem('restaurant_session');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+            
+            // Agregar estilos CSS adicionales para los modales
+            const style = document.createElement('style');
+            style.textContent = `
+                .modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    z-index: 100;
+                    justify-content: center;
+                    align-items: center;
+                }
+                
+                .modal-content {
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 12px;
+                    max-width: 400px;
+                    width: 90%;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                }
+                
+                .modal h3 {
+                    margin-bottom: 20px;
+                    color: #2c3e50;
+                    text-align: center;
+                }
+                
+                .modal-buttons {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 20px;
+                }
+                
+                .confirm-btn, .cancel-btn {
+                    flex: 1;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 6px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+                
+                .confirm-btn {
+                    background-color: #27ae60;
+                    color: white;
+                }
+                
+                .confirm-btn:hover {
+                    background-color: #219a52;
+                }
+                
+                .cancel-btn {
+                    background-color: #e74c3c;
+                    color: white;
+                }
+                
+                .cancel-btn:hover {
+                    background-color: #c0392b;
+                }
+                
+                .cantidad-selector {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 15px;
+                    margin: 20px 0;
+                }
+                
+                .cantidad-btn {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 2px solid #3498db;
+                    background-color: white;
+                    font-size: 20px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+                
+                .cantidad-btn:hover {
+                    background-color: #3498db;
+                    color: white;
+                }
+                
+                #cantidadInput {
+                    width: 60px;
+                    text-align: center;
+                    font-size: 18px;
+                    padding: 8px;
+                    border: 2px solid #ddd;
+                    border-radius: 6px;
+                }
+                
+                .modal-observaciones {
+                    margin-top: 15px;
+                }
+                
+                .modal-observaciones label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                    color: #2c3e50;
+                }
+                
+                .modal-observaciones textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border: 2px solid #ddd;
+                    border-radius: 6px;
+                    resize: vertical;
+                    min-height: 60px;
+                }
+                
+                .pedido-vacio {
+                    text-align: center;
+                    padding: 40px 20px;
+                    color: #7f8c8d;
+                }
+                
+                .pedido-vacio p {
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                }
+                
+                .pedido-vacio small {
+                    font-size: 14px;
+                }
+                
+                .observaciones-container {
+                    margin: 15px 0;
+                }
+                
+                .observaciones-container label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                    color: #2c3e50;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
